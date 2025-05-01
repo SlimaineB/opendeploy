@@ -50,12 +50,12 @@ def run():
             num_rows="dynamic",
         )
 
+
+        visualize_tasks(edited_df.to_dict(orient="records"), "Preparation Tasks")
+        
         # Sauvegarder les modifications
         if st.button("Save Changes"):
             st.success("Changes saved successfully!")
-    
-            visualize_tasks(edited_df.to_dict(orient="records"), "Preparation Tasks")
-
     # Onglet Deployment
     with tab2:
         st.header("Deployment")
@@ -115,8 +115,9 @@ def visualize_tasks(tasks, title):
             task_status = task.get("status", "pending")
             task_color = status_colors.get(task_status, "gray")
             task_team = task.get("team", "Unknown Team")
+            tooltip_text = f"Stage: {task.get('stage', 'Unknown')}, Team: {task_team}"
 
-            dot.node(f"Task{i}", f"{task_name}\n[{task_team}]", shape="box", style="filled", color=task_color)
+            dot.node(f"Task{i}", f"{task_name}\n[{task_team}]", shape="box", style="filled", color=task_color, tooltip=tooltip_text)
 
             if stage_name not in stages:
                 stages[stage_name] = []
